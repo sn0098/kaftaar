@@ -1,6 +1,0 @@
-[
-    {"name": "first_name", "type": "varchar(20)"},
-    {"name": "last_name", "type": "varchar(20)"},
-    {"name": "age", "type": "int"},
-    {"name": "is_valid", "type": "bool"}
-]
