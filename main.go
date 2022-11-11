@@ -1,35 +1,41 @@
 package main
 
 import (
-	"bufio"
 	"fmt"
-	"log"
-	"os"
-	"os/exec"
 )
 
 func main() {
-	file, err := os.Open("companies.txt")
-	if err != nil {
-		log.Fatal(err)
-	}
-	defer file.Close()
+	fmt.Println(lengthOfLongestSubstring("abcadfrt"))
+}
 
-	scanner := bufio.NewScanner(file)
+func lengthOfLongestSubstring(s string) int {
+	n := len(s)
 
-	counter := 1
-	for scanner.Scan() {
-		company := scanner.Text()
-		fmt.Println(company)
-		exec.Command("open", "https://www.google.com/search?q="+company).Start()
-		if counter == 10 {
-			fmt.Scanln()
-			counter = 0
+	var result int
+
+	charIndexMap := make(map[uint8]int)
+
+	var start int
+
+	for end := 0; end < n; end++ {
+
+		duplicateIndex, isDuplicate := charIndexMap[s[end]]
+		if isDuplicate {
+			if end-start > result {
+				result = end - start
+			}
+
+			for i := start; i <= duplicateIndex; i++ {
+				delete(charIndexMap, s[i])
+			}
+
+			start = duplicateIndex + 1
 		}
-		counter++
+		charIndexMap[s[end]] = end
+	}
+	if n-start > result {
+		result = n - start
 	}
 
-	if err := scanner.Err(); err != nil {
-		log.Fatal(err)
-	}
+	return result
 }
